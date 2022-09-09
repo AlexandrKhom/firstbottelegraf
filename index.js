@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 import { Telegraf, Scenes, session } from 'telegraf';
-import I18n from 'telegraf-i18n'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -24,12 +23,6 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const i18n = new I18n({
-    defaultLanguage: 'ru',
-    allowMissing: false, // Default true
-    directory: path.resolve(__dirname, 'locales')
-})
-
 bot.telegram.setMyCommands([
     { command: 'start', description: 'Приветствие' },
     { command: 'help', description: 'Список команд' },
@@ -45,7 +38,6 @@ bot.telegram.setMyCommands([
 
 const stage = new Scenes.Stage([calcScene])
 bot.use(session())
-bot.use(i18n.middleware())
 bot.use(stage.middleware())
 
 bot.use(startComposer);
@@ -62,7 +54,7 @@ bot.use(specialComposer);
 
 
 bot.launch().then(() => {
-    console.log(`BOT started`)
+    console.log(`BOT started ${__filename}`)
 });
 
 // Enable graceful stop

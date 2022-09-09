@@ -1,10 +1,11 @@
 import { Composer, Markup } from 'telegraf';
+import { randomCommand } from '../const.js';
 
 const composer = new Composer();
 
 export const randomComposer = composer.command('random', async (ctx) => {
     try {
-        await ctx.replyWithHTML(ctx.i18n.t('randomCommand', {ctx}),
+        await ctx.replyWithHTML(randomCommand,
             Markup.inlineKeyboard([
                 Markup.button.callback('Да', 'yes', Math.random() > 0.5),
                 Markup.button.callback('Возможно', 'maybe', Math.random() > 0.5),
@@ -19,16 +20,19 @@ export const randomComposer = composer.command('random', async (ctx) => {
 
 
 composer.action('maybe', async (ctx, next) => {
-    ctx.answerCbQuery(ctx.i18n.t('randomQuery', {ctx}));
+    ctx.answerCbQuery(`
+Oh, ${ctx.match[0]}! Great choice`);
     return ctx.reply('⁉').then(() => next());
 });
 
 composer.action('yes', async (ctx, next) => {
-    ctx.answerCbQuery(ctx.i18n.t('randomQuery', {ctx}));
+    ctx.answerCbQuery(`
+Oh, ${ctx.match[0]}! Great choice`);
     return ctx.reply('❗').then(() => next());
 });
 
 composer.action('no', async (ctx, next) => {
-    ctx.answerCbQuery(ctx.i18n.t('randomQuery', {ctx}));
+    ctx.answerCbQuery(`
+Oh, ${ctx.match[0]}! Great choice`);
     return ctx.reply('❓').then(() => next());
 });

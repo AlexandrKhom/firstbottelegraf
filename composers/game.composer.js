@@ -1,4 +1,5 @@
 import { Composer, Markup } from 'telegraf';
+import { gameCommand, moneyFalseLose, moneyFalseWin, moneyTrueLose, moneyTrueWin } from '../const.js';
 
 const composer = new Composer();
 
@@ -10,8 +11,7 @@ const result = {
 
 export const gameComposer = composer.command(['game', 'again'], async (ctx) => {
     try {
-        await ctx.replyWithHTML(`<b>Я подброшу монету, а ты отгадай:</b>
-<i>у тебя 1 попытка, но ты всегда можешь перезапустить игру</i>`,
+        await ctx.replyWithHTML(gameCommand,
             Markup.inlineKeyboard([
                 [Markup.button.callback('Орёл', '1'),
                     Markup.button.callback('Решка', '0')],
@@ -42,12 +42,12 @@ composer.action('1', async (ctx, next) => {
     if(randomNumber == data) {
         result.win++;
         randomNumber = '';
-        return ctx.replyWithHTML(ctx.i18n.t('moneyTrueWin'))
+        return ctx.replyWithHTML(moneyTrueWin)
             .then(() => next());
     } else {
         result.lose++;
         randomNumber = '';
-        return ctx.replyWithHTML(ctx.i18n.t('moneyTrueLose'))
+        return ctx.replyWithHTML(moneyTrueLose)
             .then(() => next());
     }
 });
@@ -58,12 +58,12 @@ composer.action('0', async (ctx, next) => {
     if(randomNumber == data) {
         result.win++;
         randomNumber = '';
-        return ctx.replyWithHTML(ctx.i18n.t('moneyFalseWin'))
+        return ctx.replyWithHTML(moneyFalseWin)
             .then(() => next());
     } else {
         result.lose++;
         randomNumber = '';
-        return ctx.replyWithHTML(ctx.i18n.t('moneyFalseLose'))
+        return ctx.replyWithHTML(moneyFalseLose)
             .then(() => next());
     }
 });
